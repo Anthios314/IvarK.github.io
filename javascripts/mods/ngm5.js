@@ -57,8 +57,8 @@ function isDimUnlocked(d) {
 
 //Paradox Sacrifices
 function getPxGain() {
-	let r = Decimal.sqrt(player.matter.max(player.money).max(1).log10()+1)
-	for (var d = 1; d < 9; d++) r=r.times(Math.pow(player[TIER_NAMES[d]+"Amount"].max(10).log10(), 1/3))
+	let r = new Decimal(player.matter.max(player.money).max(1).log10()+1)
+	for (var d = 1; d < 9; d++) r=r.times(Math.pow(player[TIER_NAMES[d]+"Amount"].max(10).log10(), 1))
 	return r.floor()
 }
 
@@ -182,11 +182,12 @@ let puCosts = {
 	32: 2,
 	33: 8,
 	34: 512
+	41: Math.pow(2, 26)
 }
 let puCaps = {
-	11: 9,
-	12: 9,
-	13: 10,
+	11: 100,
+	12: 100,
+	13: 100,
 	14: 10
 }
 

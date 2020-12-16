@@ -187,7 +187,7 @@ function updateTimeDimensions() {
 		}
 
 		if (tmp.ngmX >= 4) {
-			var isShift = player.tdBoosts < (inNC(4) || tmp.ngmX >= 5 ? 5 : 7)
+			var isShift = player.tdBoosts < (inNC(4) ? 5 : 7)
 			var req = getTDBoostReq()
 			document.getElementById("tdReset").style.display = ""
 			document.getElementById("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + DISPLAY_NAMES[req.tier] + " Time Dimensions"
@@ -201,9 +201,7 @@ function updateTimeDimensions() {
 
 function updateTimeShards() {
 	let p = getTimeDimensionProduction(1)
-	if (tmp.ngmX >= 5) p = p.plus(getTimeDimensionProduction(2))
 	if (tmp.inEC12) p = p.div(tmp.ec12Mult)
-
 	document.getElementById("itmult").textContent = tmp.ngp3 && player.achievements.includes('r105') ? 'Your "Infinite Time" multiplier is currently ' + shorten(tmp.it) + 'x.':''
 	document.getElementById("timeShardAmount").textContent = shortenMoney(player.timeShards)
 	document.getElementById("tickThreshold").textContent = shortenMoney(player.tickThreshold)
@@ -358,7 +356,6 @@ function buyMaxTimeDimension(tier, bulk) {
 
 	let dim = player['timeDimension' + tier]
 	let res = getOrSubResourceTD(tier)
-	let mult = TIME_DIM_COSTS[tier].mult()
 	if (!res.gte(dim.cost)) return
 
 	if (tmp.ngmX >= 4 && getAmount(1) < 1) return
@@ -366,6 +363,8 @@ function buyMaxTimeDimension(tier, bulk) {
 
 	let toBuy = 0
 	if (tmp.ngmX >= 4) {
+		let mult = TIME_DIM_COSTS[tier].mult()
+
 		toBuy = Math.floor(res.div(dim.cost).times(mult - 1).add(1).log(mult))
 		if (bulk) toBuy = Math.min(toBuy, bulk)
 
@@ -396,11 +395,11 @@ function buyMaxTimeDimension(tier, bulk) {
 		if (isNaN(newEP.e)) player.eternityPoints = new Decimal(0)
 	}
 
-	dim.amount = dim.amount.plus(toBuy)
+	dim.amount = dim.amount.plus(toBuy);
 	dim.bought += toBuy
 	if (tmp.ngmX >= 4) {
 		dim.power = Decimal.pow(getDimensionPowerMultiplier(), toBuy / 2).times(dim.power)
-		dim.cost = dim.cost.times(Decimal.pow(mult, toBuy))
+		dim.cost = dim.cost.times(Decimal.pow(timeDimCostMults[1][tier], toBuy))
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)
 		dim.power = dim.power.times(Decimal.pow(player.boughtDims ? 3 : 2, toBuy))

@@ -147,7 +147,9 @@ function infDimensionPower(tier) {
   	mult = mult.times(infDimPow)
 
   	if (hasPU(31)) mult = mult.times(puMults[31]())
-  	if (player.pSac !== undefined) if (tier == 2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
+	if (hasPU(42)) mult = mult.times(puMults[42]()) 
+
+  	if (tmp.ngmX >= 5 && tier == 2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 
 	let replUnl = !tmp.ngC && player.replicanti.unl && player.replicanti.amount.gt(1)
   	if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2)
@@ -189,7 +191,7 @@ function infDimensionPower(tier) {
 
 function resetInfDimensions(full) {
 	player.infinityPower = new Decimal(0)
-	for (let t = 1; t < 9; t++) {
+	for (let t = 1; t <= 8; t++) {
 		let dim = player["infinityDimension" + t]
 		if (full) {
 			dim.cost = new Decimal(infBaseCost[t])
@@ -197,6 +199,7 @@ function resetInfDimensions(full) {
 			dim.baseAmount = 0
 		}
 		if (player.infDimensionsUnlocked[t - 1]) dim.amount = new Decimal(dim.baseAmount)
+		if (tmp.ngmX >= 5) dim.costAM = new Decimal(idBaseCosts[t])
 	}
 	if (full) resetInfDimUnlocked()
 }
@@ -205,7 +208,7 @@ function resetInfDimUnlocked() {
 	let value = player != undefined && getEternitied() >= 25 && player.achievements.includes("ng3p21")
 	let data = []
 	for (let d = 1; d <= 8; d++) data.push(value)
-	if (player != undefined && player.pSac != undefined) data[0] = true
+	if (player != undefined && tmp.ngmX >= 5) data[0] = true
 	return data
 }
 
@@ -406,7 +409,9 @@ function updateInfPower() {
 	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(infDimensionProduction(1))+" Seventh Dimensions per second."
 	else {
 		let r = infDimensionProduction(1)
+		if (tmp.ngmX >= 5) r = r.plus(infDimensionProduction(2))
 		if (player.pSac != undefined) r = r.div(tmp.ec12Mult)
+
 		document.getElementById("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."
 	}
 }

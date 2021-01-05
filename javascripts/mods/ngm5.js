@@ -6,9 +6,7 @@ function buyIDwithAM(t, auto) { // t is the dimension number, auto is either tru
 	let d = player["infinityDimension" + t]
 	let c = d.costAM
 	if (getAmount(1) < 1) {
-		if (!auto) {
-		alert("You need to have at least 1 First Normal Dimension to be able to buy Infinity Dimensions.")
-		}
+		if (!auto) alert("You need to have at least 1 First Normal Dimension to be able to buy Infinity Dimensions.")
 		return
 	}
 	if (!player.infDimensionsUnlocked[t - 1]) return
@@ -50,8 +48,7 @@ function resetIDsOnNGM5() {
 
 //Global Dimension unlocks
 function isDimUnlocked(d) {
-	if (d < 7) return true // bruh. seriously. 
-	return false
+	return (d < 7) 
 }
 
 //Paradox Sacrifices
@@ -79,7 +76,7 @@ function pSacReset(force, chall, pxGain) {
 		player.pSac.times++
 		player.pSac[force ? "forcedTimes" : "normalTimes"]++
 		if (!force) {
-			player.infDimensionsUnlocked[1]=true
+			unlockInfinNGm5(2)
 			giveAchievement("Make Antimatter Great Again!") 
 		}
 	}
@@ -485,4 +482,11 @@ function updateGalaxyTabs() {
 	document.getElementById("galupgsbtn").style.display = player.pSac !== undefined ? "" : "none"
 	document.getElementById("galStonesbtn").style.display = player.pSac !== undefined ? "" : "none"
 	if (player.pSac === undefined) showGalTab("galUpgs")
+}
+
+function unlockInfinNGm5(dim) {
+	dim--
+	if (player.infDimensionsUnlocked[dim]) return 
+	player.infDimensionsUnlocked[dim] = true
+	$.notify("Infinity Dimension " + (dim + 1) + " unlocked!", "info")
 }

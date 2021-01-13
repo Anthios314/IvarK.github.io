@@ -149,6 +149,7 @@ function getStartingNDMult(tier) {
 		if (inNC(11)) mult = mult.times(player.chall11Pow)
 		else mult = mult.times(tmp.sacPow)
 	}
+	if (tier == 1 && tmp.ngmX > 5) mult = mult.times(1000)
 	return mult
 }
 

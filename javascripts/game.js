@@ -4479,6 +4479,7 @@ function nonERFreeTickUpdating(){
 		thresholdMult = 1.25
 		if (player.aarexModifications.newGameMult) thresholdMult -= 0.08
 	}
+	if (tmp.ngmX >= 5) thresholdMult = 1.5
 	if (isQCRewardActive(7)) thresholdMult *= tmp.qcRewards[7]
 	if (ph.did("ghostify") && player.ghostify.neutrinos.boosts > 9) thresholdMult -= tmp.nb[10]
 	if (thresholdMult < 1.1 && player.galacticSacrifice == undefined) thresholdMult = 1.05 + 0.05 / (2.1 - thresholdMult)

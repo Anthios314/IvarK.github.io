@@ -149,7 +149,7 @@ function getStartingNDMult(tier) {
 		if (inNC(11)) mult = mult.times(player.chall11Pow)
 		else mult = mult.times(tmp.sacPow)
 	}
-	if (tier == 1 && tmp.ngmX > 5) mult = mult.times(1000)
+	//if (tier == 1 && tmp.ngmX > 5) mult = mult.times(1000)
 	return mult
 }
 
@@ -644,7 +644,10 @@ function getDimensionProductionPerSecond(tier) {
 	}
 	ret = ret.times(getDimensionFinalMultiplier(tier))
 
-	if ((tmp.ngC || tmp.ez) && tier == 1) ret = ret.times(3)
+	if (tier === 1) {
+		if (tmp.ngC || tmp.ez) ret = ret.times(3)
+		if (tmp.ngmX >= 5) ret = ret.times(1000)
+	}
 	if (tmp.ez && tier != 1) ret = ret.times(10)
 	if (inNC(2) || player.currentChallenge == "postc1" || tmp.ngmR || tmp.ngmX >= 5) ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)

@@ -371,7 +371,10 @@ function getIDReplMult() {
 
 function updateInfPower() {
 	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
-	if (getEl("infPowEffectPower")) getEl("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
+	if (getEl("infPowEffectPower")) {
+		if (tmp.ngmX !== 5 || tmp.infPow.log10() < 10) getEl("infPowEffectPower").textContent = tmp.infPowExp.toFixed(tmp.ngmX !== 5 ? 2 : 1)
+		else getEl("infPowEffectPower").textContent =  Math.min(tmp.infPow.log10() / player.infinityPower.log10()).toFixed(1)
+	}
 	document.getElementById("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
 	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(infDimensionProduction(1))+" Seventh Dimensions per second."
 	else {
